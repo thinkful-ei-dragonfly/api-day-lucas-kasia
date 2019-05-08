@@ -1,6 +1,7 @@
 /* global cuid */
 
 // eslint-disable-next-line no-unused-vars
+'use strict';
 const Item = (function(){
 
   const validateName = function(name) {
@@ -19,5 +20,5 @@ const Item = (function(){
     validateName,
     create,
   };
-  
+
 }());

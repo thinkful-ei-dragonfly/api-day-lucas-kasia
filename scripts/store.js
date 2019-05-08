@@ -1,6 +1,7 @@
 /* global Item */
 
 // eslint-disable-next-line no-unused-vars
+'use strict';
 const store = (function(){
   const addItem = function(name) {
     try {
@@ -61,5 +62,5 @@ const store = (function(){
     setSearchTerm,
     setItemIsEditing,
   };
-  
+
 }());
