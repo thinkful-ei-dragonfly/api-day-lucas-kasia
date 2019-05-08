@@ -85,8 +85,13 @@ const shoppingList = (function(){
   function handleItemCheckClicked() {
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
-      store.findAndToggleChecked(id);
-      render();
+      const currentItem = store.items.find(item => item.id === id);
+      api.updateItem(id, { checked: !currentItem.checked })
+        .then(res => res.json())
+        .then(() => {
+          store.findAndUpdate(id, { checked: !currentItem.checked });
+          render();
+        });
     });
   }
 
@@ -95,10 +100,17 @@ const shoppingList = (function(){
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
       // get the index of the item in store.items
       const id = getItemIdFromElement(event.currentTarget);
-      // delete the item
-      store.findAndDelete(id);
-      // render the updated shopping list
-      render();
+      const currentItem = store.items.find(item => item.id === id);
+      api.deleteItem(id)
+        .then(res => res.json())
+        .then(() =>{
+        // delete the item
+          store.findAndDelete(id);
+          // render the updated shopping list
+          render();
+        });
+
+
     });
   }
 
@@ -107,15 +119,13 @@ const shoppingList = (function(){
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
       const newName = $(event.currentTarget).find('.shopping-item').val();
-      
-      api.updateItem(id, newName)
-      .then(res => res.json())
+
+      api.updateItem(id, {name: newName})
+          .then(res => res.json())
       .then((items) => {
-        store.findAndUpdate(id, newName);
+            store.findAndUpdate(id, {name: newName});
         render()
       })
-      .then(() => render())
-      // store.findAndUpdateName(id, itemName);
       store.setItemIsEditing(id, false);
       render();
     });

@@ -22,15 +22,22 @@ const api = (function(){
   }
 
   function updateItem(id, updateData) {
-    let updatedItem = JSON.stringify({
-      name: updateData,
-    });
+    let updatedItem = JSON.stringify(updateData);
     const options = {
       method: 'PATCH',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
       body: updatedItem,
+    };
+    return fetch(`${BASE_URL}/items/${id}`, options);
+  }
+  function deleteItem(id) {
+    const options = {
+      method: 'DELETE',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
     };
     return fetch(`${BASE_URL}/items/${id}`, options);
   }
@@ -43,5 +50,6 @@ const api = (function(){
     getItems,
     createItem,
     updateItem,
+    deleteItem
   };
 }());
