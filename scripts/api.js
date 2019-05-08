@@ -5,6 +5,9 @@ const api = (function(){
   // This is going to be the underlying fetch function,
   // we'll just pass in the options from the CRUD methods
   function baseFetchMethod(...args) {
+    // ...args is a spread operator meaning
+    // it will combine all arguments into a local variable
+    // aka it will run this function any number of arguments that you throw in
     let error = false;
     return fetch(...args)
       .then(response => {
