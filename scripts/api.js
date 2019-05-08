@@ -18,9 +18,9 @@ const api = (function(){
         'Content-Type': 'application/json'
       }),
       body: newItem,
-    }
+    };
 
-    return fetch(`${BASE_URL}/items`, options)//this is sending newItem in post request
+    return fetch(`${BASE_URL}/items`, options); // this is sending newItem in post request
 
   }
 
