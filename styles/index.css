@@ -53,3 +53,9 @@ button:hover:disabled {
 .shopping-item__checked {
   text-decoration: line-through;
 }
+.js-error-message {
+  border: 1px solid red;
+  background: lightpink;
+  color: red;
+  font-size: 2em;
+}

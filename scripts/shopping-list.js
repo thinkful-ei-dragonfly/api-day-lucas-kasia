@@ -52,7 +52,11 @@ const shoppingList = (function(){
     if (store.searchTerm) {
       items = items.filter(item => item.name.includes(store.searchTerm));
     }
-
+    if (store.errorMessage) {
+      $('.js-error-message').removeClass('hidden').html(`
+        <h2>${store.errorMessage}</h2>
+        `);
+    }
     // render the shopping list in the DOM
     const shoppingListItemsString = generateShoppingItemsString(items);
 
@@ -70,6 +74,10 @@ const shoppingList = (function(){
         .then((newItem) => {
           store.addItem(newItem);
           render();
+        })
+        .catch(error => {
+          store.errorMessage = error.message;
+          render();
         });
 
     });
@@ -86,9 +94,12 @@ const shoppingList = (function(){
       const id = getItemIdFromElement(event.currentTarget);
       const currentItem = store.items.find(item => item.id === id);
       api.updateItem(id, { checked: !currentItem.checked })
-        .then(res => res.json())
         .then(() => {
           store.findAndUpdate(id, { checked: !currentItem.checked });
+          render();
+        })
+        .catch(error => {
+          store.errorMessage = error.message;
           render();
         });
     });
@@ -103,6 +114,10 @@ const shoppingList = (function(){
         .then(() => {
           store.findAndDelete(id);
           render();
+        })
+        .catch(error => {
+          store.errorMessage = error.message;
+          render();
         });
     });
   }
@@ -116,6 +131,10 @@ const shoppingList = (function(){
       api.updateItem(id, {name: newName})
         .then(() => {
           store.findAndUpdate(id, {name: newName});
+          render();
+        })
+        .catch(error => {
+          store.errorMessage = error.message;
           render();
         });
       store.setItemIsEditing(id, false);

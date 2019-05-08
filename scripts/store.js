@@ -42,6 +42,7 @@ const store = (function(){
     items: [],
     hideCheckedItems: false,
     searchTerm: '',
+    errorMessage: '',
     findAndUpdate,
     addItem,
     findById,
