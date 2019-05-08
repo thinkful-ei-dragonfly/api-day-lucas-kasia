@@ -67,7 +67,6 @@ const shoppingList = (function(){
       const newItemName = $('.js-shopping-list-entry').val();
       $('.js-shopping-list-entry').val('');
       api.createItem(newItemName)
-        .then(response => response.json())
         .then((newItem) => {
           store.addItem(newItem);
           render();
@@ -100,17 +99,11 @@ const shoppingList = (function(){
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
       // get the index of the item in store.items
       const id = getItemIdFromElement(event.currentTarget);
-      const currentItem = store.items.find(item => item.id === id);
       api.deleteItem(id)
-        .then(res => res.json())
-        .then(() =>{
-        // delete the item
+        .then(() => {
           store.findAndDelete(id);
-          // render the updated shopping list
           render();
         });
-
-
     });
   }
 
@@ -121,11 +114,10 @@ const shoppingList = (function(){
       const newName = $(event.currentTarget).find('.shopping-item').val();
 
       api.updateItem(id, {name: newName})
-          .then(res => res.json())
-      .then((items) => {
-            store.findAndUpdate(id, {name: newName});
-        render()
-      })
+        .then(() => {
+          store.findAndUpdate(id, {name: newName});
+          render();
+        });
       store.setItemIsEditing(id, false);
       render();
     });

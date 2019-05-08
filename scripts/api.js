@@ -2,10 +2,32 @@
 
 const api = (function(){
   const BASE_URL = 'https://thinkful-list-api.herokuapp.com/lucaskasia';
+  // This is going to be the underlying fetch function,
+  // we'll just pass in the options from the CRUD methods
+  function baseFetchMethod(...args) {
+    let error = false;
+    return fetch(...args)
+      .then(response => {
+        if (!response.ok) {
+          // If we get an HTTP response but it's not 2xx status, it would be an error
+          error = { code: response.status };
+        }
+        // parse the JSON response
+        return response.json();
+      })
+      .then(data => {
+        // If an error was found, reject the Promise with that error Object
+        if (error) {
+          error.message = data.message;
+          return Promise.reject(error);
+        }
 
+        // Otherwise return the resolved newData
+        return data;
+      });
+  }
   function getItems(){
-    // return Promise.resolve('A successful response!');
-    return fetch(`${BASE_URL}/items`);
+    return baseFetchMethod(`${BASE_URL}/items`);
   }
   function createItem(name){
     let newItem = JSON.stringify({
@@ -18,7 +40,7 @@ const api = (function(){
       }),
       body: newItem,
     };
-    return fetch(`${BASE_URL}/items`, options); // this is sending newItem in post request
+    return baseFetchMethod(`${BASE_URL}/items`, options); // this is sending newItem in post request
   }
 
   function updateItem(id, updateData) {
@@ -30,7 +52,7 @@ const api = (function(){
       }),
       body: updatedItem,
     };
-    return fetch(`${BASE_URL}/items/${id}`, options);
+    return baseFetchMethod(`${BASE_URL}/items/${id}`, options);
   }
   function deleteItem(id) {
     const options = {
@@ -39,7 +61,7 @@ const api = (function(){
         'Content-Type': 'application/json'
       })
     };
-    return fetch(`${BASE_URL}/items/${id}`, options);
+    return baseFetchMethod(`${BASE_URL}/items/${id}`, options);
   }
 
 
