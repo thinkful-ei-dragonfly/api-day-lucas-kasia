@@ -14,6 +14,10 @@ button:hover {
   cursor: pointer;
 }
 
+button:hover:disabled {
+  cursor: default;
+}
+
 .hidden {
   display: none;
 }
@@ -48,4 +52,10 @@ button:hover {
 
 .shopping-item__checked {
   text-decoration: line-through;
+}
+.js-error-message {
+  border: 1px solid red;
+  background: lightpink;
+  color: red;
+  font-size: 2em;
 }
