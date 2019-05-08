@@ -7,8 +7,29 @@ const api = (function(){
     // return Promise.resolve('A successful response!');
     return fetch(`${BASE_URL}/items`);
   }
+  function createItem(name){
+    let newItem = {
+      name: name,
+    }
+    JSON.stringify(newItem);
+    const options = {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body: newItem,
+    }
+
+    return fetch(BASE_URL, options)//this is sending newItem in post request
+    
+  }
+
+
+
+
 
   return  {
-    getItems
+    getItems,
+    createItem,
   };
 }());
